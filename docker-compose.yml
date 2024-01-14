@@ -1,7 +1,7 @@
 version: "3"
 services:
   application:
-    image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:backend-latest
+    image: junmop950/total-hub-site:backend-latest
     ports:
       - "8080:8080"
     environment:
