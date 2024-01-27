@@ -23,7 +23,7 @@ jobs:
           cd /docker-compose
           sudo rm -rf *
           git init
-          git remote add origin YOUR_REPOSITORY_URL
+          git remote add origin git@github.com:TotalHubSite/TotalHubSite-DockerCompose.git
           git pull origin main
 
     - name: Run docker-compose in EC2
