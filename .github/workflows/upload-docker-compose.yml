@@ -34,36 +34,11 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
+          export SPRING_ACTIVE_PROFILE=${{ secrets.SPRING_ACTIVE_PROFILE }}
+          export SPRING_DATABASE_USERNAME=${{ secrets.SPRING_DATABASE_USERNAME }}
+          export SPRING_DATABASE_PASSWORD=${{ secrets.SPRING_DATABASE_PASSWORD }}
           cd /docker-compose
-          sudo docker-compose up -d
+          sudo -E docker-compose pull
+          sudo -E docker-compose up -d --force-recreate
 
-    # - name: Create docker-compose directory in EC2
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.EC2_HOST }}
-    #     username: ${{ secrets.EC2_USERNAME }}
-    #     key: ${{ secrets.EC2_PRIVATE_KEY }}
-    #     script: |
-    #       if [ ! -d "/docker-compose" ]; then
-    #         sudo mkdir /docker-compose
-    #         sudo chown $USER:$USER /docker-compose
-    #       fi
 
-    # - name: Upload docker-compose.yml to EC2
-    #   uses: appleboy/scp-action@master
-    #   with:
-    #     host: ${{ secrets.EC2_HOST }}
-    #     username: ${{ secrets.EC2_USERNAME }}
-    #     key: ${{ secrets.EC2_PRIVATE_KEY }}
-    #     source: "./docker-compose.yml"
-    #     target: "/docker-compose/"
-
-    # - name: Run docker-compose in EC2
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.EC2_HOST }}
-    #     username: ${{ secrets.EC2_USERNAME }}
-    #     key: ${{ secrets.EC2_PRIVATE_KEY }}
-    #     script: |
-    #       cd /docker-compose
-    #       sudo docker-compose up -d
