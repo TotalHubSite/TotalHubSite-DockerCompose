@@ -13,26 +13,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Create docker-compose directory in EC2
+    - name: Clean docker-compose directory and pull the latest code in EC2
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
-          if [ ! -d "/docker-compose" ]; then
-            sudo mkdir /docker-compose
-            sudo chown $USER:$USER /docker-compose
-          fi
-
-    - name: Upload docker-compose.yml to EC2
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.EC2_PRIVATE_KEY }}
-        source: "./docker-compose.yml"
-        target: "/docker-compose/"
+          cd /docker-compose
+          sudo rm -rf *
+          git init
+          git remote add origin YOUR_REPOSITORY_URL
+          git pull origin main
 
     - name: Run docker-compose in EC2
       uses: appleboy/ssh-action@master
@@ -43,3 +35,34 @@ jobs:
         script: |
           cd /docker-compose
           sudo docker-compose up -d
+
+    # - name: Create docker-compose directory in EC2
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.EC2_HOST }}
+    #     username: ${{ secrets.EC2_USERNAME }}
+    #     key: ${{ secrets.EC2_PRIVATE_KEY }}
+    #     script: |
+    #       if [ ! -d "/docker-compose" ]; then
+    #         sudo mkdir /docker-compose
+    #         sudo chown $USER:$USER /docker-compose
+    #       fi
+
+    # - name: Upload docker-compose.yml to EC2
+    #   uses: appleboy/scp-action@master
+    #   with:
+    #     host: ${{ secrets.EC2_HOST }}
+    #     username: ${{ secrets.EC2_USERNAME }}
+    #     key: ${{ secrets.EC2_PRIVATE_KEY }}
+    #     source: "./docker-compose.yml"
+    #     target: "/docker-compose/"
+
+    # - name: Run docker-compose in EC2
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.EC2_HOST }}
+    #     username: ${{ secrets.EC2_USERNAME }}
+    #     key: ${{ secrets.EC2_PRIVATE_KEY }}
+    #     script: |
+    #       cd /docker-compose
+    #       sudo docker-compose up -d
