@@ -22,10 +22,14 @@ jobs:
         script: |
           cd /docker-compose
           sudo rm -rf *
+          echo "After clean up:"
+          ls -al
           git init
           git remote remove origin
           git remote add origin https://github.com/TotalHubSite/TotalHubSite-DockerCompose.git
           git pull origin main
+          echo "After git pull:"
+          ls -al
 
     - name: Run docker-compose in EC2
       uses: appleboy/ssh-action@master
