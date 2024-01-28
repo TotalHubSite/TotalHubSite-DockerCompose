@@ -1,11 +1,22 @@
 version: "3"
 services:
-  application:
-    image: junmop950/total-hub-site:backend-latest
+  backend:
+    image: junmop950/junmo-website-backend:latest
     ports:
       - "8080:8080"
     environment:
       SPRING_ACTIVE_PROFILE: ${SPRING_ACTIVE_PROFILE}
       SPRING_DATABASE_USERNAME: ${SPRING_DATABASE_USERNAME}
       SPRING_DATABASE_PASSWORD: ${SPRING_DATABASE_PASSWORD}
-
+  frontend:
+    image: junmop950/total-hub-site:frontend-latest
+    ports:
+      - "80:80"
+  rabbitmq:
+    build:
+      context: ./chat
+      dockerfile: Dockerfile
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "61613:61613"
