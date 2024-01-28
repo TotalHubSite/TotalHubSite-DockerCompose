@@ -21,12 +21,11 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
           cd /docker-compose
-          sudo rm -rf *
-          echo "After clean up:"
-          ls -al
-          git init
-          git remote remove origin
-          git remote add origin https://github.com/TotalHubSite/TotalHubSite-DockerCompose.git
+          if [ ! -d ".git" ]; then
+            sudo rm -rf *
+            git init
+            git remote add origin https://github.com/TotalHubSite/TotalHubSite-DockerCompose.git
+          fi
           git pull origin main
           echo "After git pull:"
           ls -al
