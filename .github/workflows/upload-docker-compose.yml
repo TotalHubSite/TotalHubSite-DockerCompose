@@ -23,10 +23,10 @@ jobs:
           cd /docker-compose
           if [ ! -d ".git" ]; then
             sudo rm -rf *
-            git init
-            git remote add origin https://github.com/TotalHubSite/TotalHubSite-DockerCompose.git
+            sudo git init
+            sudo git remote add origin https://github.com/TotalHubSite/TotalHubSite-DockerCompose.git
           fi
-          git pull origin main
+          sudo git pull origin main
           echo "After git pull:"
           ls -al
 
