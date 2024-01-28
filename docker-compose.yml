@@ -1,7 +1,7 @@
 version: "3"
 services:
   backend:
-    image: junmop950/junmo-website-backend:latest
+    image: junmop950/total-hub-site:backend-latest
     ports:
       - "8080:8080"
     environment:
